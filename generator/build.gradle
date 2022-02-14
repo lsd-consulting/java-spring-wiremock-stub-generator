@@ -62,13 +62,6 @@ jacocoTestReport {
         html.setDestination(project.provider(() -> new File("${project.buildDir}/reports/coverage")))
     }
     dependsOn test
-//    mustRunAfter(test)
-//    executionData(
-//            file("${project.buildDir}/jacoco/test.exec")
-//            file("${project.buildDir}/jacoco/consumerContractTest.exec"),
-//            file("${project.buildDir}/jacoco/contractTest.exec"),
-//            file("${project.buildDir}/jacoco/componentTest.exec")
-//    )
 }
 
 java {
@@ -79,11 +72,11 @@ java {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId "java-spring-wiremock-stub-generator"
+            artifactId "${rootProject.name}"
             from components.java
 
             pom {
-                name = 'java-spring-wiremock-stub-generator'
+                name = '${rootProject.name}'
                 url = 'https://github.com/lsd-consulting/java-spring-wiremock-stub-generator'
                 licenses {
                     license {

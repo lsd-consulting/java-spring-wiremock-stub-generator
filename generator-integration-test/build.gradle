@@ -4,6 +4,10 @@ plugins {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
     afterSuite { desc, result ->
         if (!desc.parent) {
             logger.lifecycle("Integration test results: (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)")
@@ -16,7 +20,6 @@ test {
 
 dependencies {
     implementation project(":generator-integration-test-api")
-//    implementation project(':plugin')
 
     compileOnly 'com.github.tomakehurst:wiremock:2.27.2'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.5.6'
@@ -28,8 +31,6 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor "org.projectlombok:lombok:1.18.22"
-
-//    testAnnotationProcessor project(":plugin")
 
     testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.6') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
