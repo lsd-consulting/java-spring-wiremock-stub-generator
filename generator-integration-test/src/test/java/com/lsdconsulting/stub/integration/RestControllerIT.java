@@ -2,6 +2,7 @@ package com.lsdconsulting.stub.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.lsdconsulting.stub.integration.controller.GetRestControllerStub;
 import com.lsdconsulting.stub.integration.model.Greeting;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -27,6 +28,7 @@ public class RestControllerIT {
     static void setupAll() {
         wireMockServer = new WireMockServer(options().port(8080));
         wireMockServer.start();
+        WireMock.reset();
     }
 
     @AfterAll
