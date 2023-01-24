@@ -1,6 +1,0 @@
-rootProject.name = 'java-spring-wiremock-stub-generator'
-
-include 'plugin'
-include 'generator'
-include 'generator-integration-test'
-include 'generator-integration-test-api'
