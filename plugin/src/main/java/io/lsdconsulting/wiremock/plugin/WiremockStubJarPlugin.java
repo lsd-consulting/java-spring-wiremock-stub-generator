@@ -9,6 +9,31 @@ import org.gradle.api.tasks.compile.JavaCompile;
 
 import java.io.File;
 
+/*
+ * This plugin is the equivalent of the following Gradle set up in Groovy:
+ *
+ * task compileStubs(type: JavaCompile) {
+ *     JavaCompile compileJava = project.getTasksByName("compileJava", true).toArray()[0]
+ *     classpath = compileJava.classpath
+ *     source = project.getLayout().getBuildDirectory().dir("generated-stub-sources")
+ *     def stubsClassesDir = file("${project.getBuildDir()}/generated-stub-classes")
+ *     destinationDir(stubsClassesDir)
+ *     compileJava.finalizedBy(compileStubs)
+ * }
+ *
+ * task stubsJar(type: Jar) {
+ *     JavaCompile compileJavaStubs = project.getTasksByName("compileStubs", true).toArray()[0]
+ *     setDescription('Java Wiremock stubs JAR')
+ *     setGroup("Verification")
+ *     archiveBaseName.convention(project.provider(project::getName))
+ *     archiveClassifier.convention("wiremock-stubs")
+ *     from(compileJavaStubs.getDestinationDirectory())
+ *     dependsOn(compileJavaStubs)
+ *     compileJavaStubs.finalizedBy(stubsJar);
+ *     project.artifacts(artifactHandler -> artifactHandler.add("archives", stubsJar));
+ * }
+ *
+ */
 public class WiremockStubJarPlugin implements Plugin<Project> {
 
     private static final String GENERATED_STUB_CLASSES_DIRECTORY = "generated-stub-classes";
@@ -26,6 +51,7 @@ public class WiremockStubJarPlugin implements Plugin<Project> {
         TaskProvider<JavaCompile> compileJavaStubs = project.getTasks().register("compileStubs", JavaCompile.class,
                 compileStubs -> {
                     File stubsClassesDir = new File(project.getBuildDir() + "/" + GENERATED_STUB_CLASSES_DIRECTORY);
+                    project.getLogger().lifecycle("classes dir:" + (project.getBuildDir() + "/" + GENERATED_STUB_CLASSES_DIRECTORY));
                     stubsClassesDir.mkdirs();
                     compileStubs.setClasspath(compileJava.getClasspath());
                     compileStubs.source(project.getLayout().getBuildDirectory().dir(GENERATED_STUB_SOURCES_DIRECTORY));

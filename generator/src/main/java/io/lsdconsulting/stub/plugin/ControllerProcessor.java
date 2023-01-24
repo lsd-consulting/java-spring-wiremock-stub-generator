@@ -8,10 +8,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -27,6 +24,7 @@ import java.util.Set;
 
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
+@SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class ControllerProcessor extends AbstractProcessor {
     private RestControllerAnnotationHandler restControllerAnnotationHandler;
 
@@ -64,9 +62,6 @@ public class ControllerProcessor extends AbstractProcessor {
     @SneakyThrows
     public boolean process(Set<? extends TypeElement> annotations,
                            RoundEnvironment roundEnv) {
-
-        File sourcesDir = new File(System.getProperty("user.dir") + "/build/generated-stub-sources");
-        sourcesDir.mkdir();
 
         final ControllerModel controllerModel = new ControllerModel();
 
